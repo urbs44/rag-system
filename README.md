@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RAG System
+
+A multi-provider Retrieval-Augmented Generation (RAG) system built with Next.js. Upload documents to create a knowledge base, then chat with an AI that can reference your documents to provide accurate, contextual answers.
+
+## Features
+
+### 🤖 Multi-Provider Support
+- **Google Gemini** - Native file upload with Gemini File API
+- **OpenAI** - Assistants API with File Search and Vector Stores
+
+### 📚 Knowledge Base
+- Upload PDF, TXT, and MD files
+- Documents are automatically indexed for retrieval
+- Provider-specific storage (files don't transfer between providers)
+- Visual indicator showing which provider stores your files
+
+### 💬 Chat Interface
+- Streaming responses with real-time typing effect
+- Source citations from your documents
+- Chat history persists in browser localStorage
+- Usage tracking (tokens & estimated costs)
+
+### ⚙️ Settings
+- API key management per provider (stored locally)
+- Model selection with pricing information
+- Usage statistics with cost estimates
+- Easy provider switching
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS
+- **AI Providers**: Google Gemini, OpenAI
+- **Storage**: localStorage (client-side)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- API key from [Google AI Studio](https://aistudio.google.com/apikey) and/or [OpenAI Platform](https://platform.openai.com/api-keys)
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/urbs44/rag-system.git
+cd rag-system
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Go to **Settings** in the sidebar
+2. Select your preferred AI provider (Gemini or OpenAI)
+3. Enter your API key and click **Save**
+4. Choose a model
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+### Upload Documents
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Go to **Knowledge Base**
+2. Drag and drop files or click to upload
+3. Supported formats: PDF, TXT, MD
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Chat with Your Documents
 
-## Deploy on Vercel
+1. Go to **Chat**
+2. Ask questions about your uploaded documents
+3. The AI will cite sources using `[Source: filename]` format
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Provider Comparison
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Feature | Gemini | OpenAI |
+|---------|--------|--------|
+| File Upload | ✅ Native File API | ✅ Vector Store |
+| File Expiration | 48 hours | Pay per GB/day |
+| RAG Quality | Excellent | Excellent |
+| Cost | Lower | Higher |
+| Best For | Document-heavy workflows | GPT model preference |
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── chat/         # Chat endpoint (streaming)
+│   │   ├── files/        # File listing
+│   │   ├── upload/       # File upload
+│   │   └── validate-key/ # API key validation
+│   ├── knowledge/        # Knowledge Base page
+│   └── settings/         # Settings page
+├── components/
+│   ├── chat/             # Chat interface
+│   ├── knowledge/        # Upload zone & file list
+│   └── layout/           # Sidebar
+└── lib/
+    ├── settings.ts       # Settings & storage utilities
+    └── openai-assistants.ts # OpenAI Assistants helper
+```
+
+## Security Notes
+
+- API keys are stored in browser localStorage (not sent to any server except the AI providers)
+- `.env.local` is gitignored to prevent accidental key exposure
+- For production, consider server-side key management
+
+## License
+
+MIT
